@@ -81,7 +81,6 @@ class FilmInPlaylist(db.Model):
             return redirect(url_for('create_playlist'))
 
 
-
 class Playlist(db.Model):
     __tablename__ = 'playlist'
     __table_args__ = {'extend_existing': True}
@@ -163,6 +162,16 @@ class RatingOfPlaylist(db.Model):
         except:
             flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
             return redirect(url_for('playlist', id_playlist=id_playlist))
+
+    @staticmethod
+    def delete_rating_of_playlist(id_playlist):
+        try:
+            query = db.session.query(Playlist).filter(RatingOfPlaylist.id_of_playlist == id_playlist).delete()
+            db.session.commit()
+            flash('Плейлист успешно удалён')
+        except:
+            flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
+            return redirect(url_for('create_playlist'))
 
 
 class RoleOfUser(db.Model):

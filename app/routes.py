@@ -75,6 +75,7 @@ def create_playlist():
 
         if delete_playlist_form.submit_delete.data:
 
+            RatingOfPlaylist.delete_rating_of_playlist(delete_playlist_form.id_playlist.data)
             FilmInPlaylist.delete_film_in_playlist(delete_playlist_form.id_playlist.data)
             Playlist.delete_playlist(delete_playlist_form.id_playlist.data)
             return redirect(url_for('create_playlist'))
