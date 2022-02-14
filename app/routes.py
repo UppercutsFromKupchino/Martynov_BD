@@ -111,12 +111,12 @@ def playlist(id_playlist):
 
     all_marks = RatingOfPlaylist.get_all_marks_for_playlist(id_playlist)
     all_marks_len = len(all_marks)
-    print(all_marks)
 
     mean_mark = 0
     for i in range(all_marks_len):
         mean_mark += all_marks[i][0]
-    mean_mark = mean_mark / all_marks_len
+    if all_marks_len != 0:
+        mean_mark = mean_mark / all_marks_len
 
     if session['role'] == 2:
 
