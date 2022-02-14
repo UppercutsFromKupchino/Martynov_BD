@@ -15,6 +15,7 @@
         <a href="{{ url_for('playlists') }}">Плейлисты</a>
         {% if session['role'] == 1 %}
         <a href="{{ url_for('create_playlist') }}">Создать плейлист</a>
+        <a href="{{ url_for('films') }}">Фильмы</a>
         {% endif %}
         {% endif %}
     </div>
