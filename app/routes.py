@@ -107,11 +107,7 @@ def playlists():
 def playlist(id_playlist):
 
     _playlist = Playlist.get_info_about_playlist(id_playlist)
-    print(_playlist)
-    print(_playlist[0])
-
-    # mean_mark = mean(_playlist[0][4].mark)
-    print(_playlist[0][2].name_of_film)
+    _playlist_len = len(_playlist)
 
     if session['role'] == 2:
 
@@ -123,9 +119,9 @@ def playlist(id_playlist):
             return redirect(url_for('playlist', id_playlist=id_playlist))
 
         return render_template("playlist.html", _playlist=_playlist, rate_playlist_form=rate_playlist_form,
-                               id_playlist=id_playlist)
+                               id_playlist=id_playlist, _playlist_len=_playlist_len)
 
-    return render_template("playlist.html", _playlist=_playlist, id_playlist=id_playlist)
+    return render_template("playlist.html", _playlist=_playlist, id_playlist=id_playlist, _playlist_len=_playlist_len)
 
 
 @app.route('/films', methods=['GET', 'POST'])
