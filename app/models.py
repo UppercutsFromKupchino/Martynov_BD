@@ -70,6 +70,17 @@ class FilmInPlaylist(db.Model):
             flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
             return redirect(url_for('films'))
 
+    @staticmethod
+    def delete_film_in_playlist(id_playlist):
+        try:
+            query = db.session.query(FilmInPlaylist).filter(FilmInPlaylist.id_of_playlist == id_playlist).delete()
+            db.session.commit()
+            flash('Плейлист успешно удалён')
+        except:
+            flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
+            return redirect(url_for('create_playlist'))
+
+
 
 class Playlist(db.Model):
     __tablename__ = 'playlist'
