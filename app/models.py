@@ -73,7 +73,7 @@ class FilmInPlaylist(db.Model):
     @staticmethod
     def delete_film_in_playlist(id_playlist):
         try:
-            query = db.session.query(FilmInPlaylist).filter(FilmInPlaylist.id_of_playlist == id_playlist).delete()
+            query = db.session.query(FilmInPlaylist).filter(FilmInPlaylist.id_of_playlist == id_playlist).delete(synchronize_session=False)
             db.session.commit()
             flash('Плейлист успешно удалён')
         except:
@@ -117,7 +117,7 @@ class Playlist(db.Model):
     @staticmethod
     def get_id_of_playlist_by_name_of_playlist(name):
         try:
-            query = db.session.query(Playlist).filter(Playlist.name_of_playlist == name).one()
+            query = db.session.query(RatingOfPlaylist).filter(Playlist.name_of_playlist == name).one()
             return query
         except:
             flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
@@ -139,13 +139,13 @@ class Playlist(db.Model):
 
     @staticmethod
     def delete_playlist(id_playlist):
-        try:
-            query = db.session.query(Playlist).filter(Playlist.id_of_playlist == id_playlist).delete()
-            db.session.commit()
-            flash('Плейлист успешно удалён')
-        except:
-            flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
-            return redirect(url_for('create_playlist'))
+        # try:
+        query = db.session.query(Playlist).filter(Playlist.id_of_playlist == id_playlist).delete(synchronize_session=False)
+        db.session.commit()
+        flash('Плейлист успешно удалён')
+        # except:
+        #     flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
+        #     return redirect(url_for('create_playlist'))
 
 
 class RatingOfPlaylist(db.Model):
@@ -165,13 +165,13 @@ class RatingOfPlaylist(db.Model):
 
     @staticmethod
     def delete_rating_of_playlist(id_playlist):
-        try:
-            query = db.session.query(Playlist).filter(RatingOfPlaylist.id_of_playlist == id_playlist).delete()
-            db.session.commit()
-            flash('Плейлист успешно удалён')
-        except:
-            flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
-            return redirect(url_for('create_playlist'))
+        # try:
+        query = db.session.query(RatingOfPlaylist).filter(RatingOfPlaylist.id_of_playlist == id_playlist).delete(synchronize_session=False)
+        db.session.commit()
+        flash('Плейлист успешно удалён')
+        # except:
+        #     flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
+        #     return redirect(url_for('create_playlist'))
 
 
 class RoleOfUser(db.Model):
