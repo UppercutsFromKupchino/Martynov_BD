@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Фильмы</title>
+</head>
+<body>
+    <div class="cap-links">
+        <a href="{{ url_for('index') }}">Домашняя страница</a>
+        <a href="{{ url_for('logout') }}">Выход из системы</a>
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+     <ul>
+         {% for message in messages %}
+         <li>{{ message }}</li>
+         {% endfor %}
+     </ul>
+    {% endif %}
+    {% endwith %}
+    {% if session['role'] == 1 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Название фильма</th>
+                    <th>Выбор плейлиста</th>
+                    <th>Добавить фильм в плейлист</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for film in all_films %}
+                    <tr>
+                        <td>{{ film.name_of_film }}</td>
+                        <form class="add-film-to-playlist" action="{{ url_for('films') }}" method="post">
+                            <td>{{ add_film_to_playlist.select_playlist() }}</td>
+                            <td>
+                                {{ add_film_to_playlist.id_of_film(value=film.id_of_film) }}
+                                {{ add_film_to_playlist.submit() }}
+                            </td>
+                        </form>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif session['role'] == 2 %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Название фильма</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for film in all_films %}
+                    <td>{{ film.name_of_film }}</td>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</body>
+</html>

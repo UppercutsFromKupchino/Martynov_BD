@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Плейлист {{ playlist_name }}</title>
+</head>
+<body>
+    <div class="cap-links">
+        <a href="{{ url_for('index') }}">Домашняя страница</a>
+        <a href="{{ url_for('logout') }}">Выход из системы</a>
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+     <ul>
+         {% for message in messages %}
+         <li>{{ message }}</li>
+         {% endfor %}
+     </ul>
+    {% endif %}
+    {% endwith %}
+    <table>
+        <thead>
+            <tr>
+                <th>Название плейлиста</th>
+                <th>Логин криейтора</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>{{ _playlist[0][0].name_of_playlist }}</td>
+                <td>{{ _playlist[0][3].login_of_user }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>Название фильма</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for playlist in _playlist %}
+            <tr>
+                <td>{{ playlist[2].name_of_film }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if session['role'] == 2 %}
+        <form class="rate-playlist-form" action="{{ url_for('playlist', id_playlist=id_playlist) }}" method="post">
+            {{ rate_playlist_form.rate_playlist(placeholder_="Оценка(от 1 до 5)") }}<br>
+            {{ rate_playlist_form.submit_rate() }}
+        </form>
+    {% endif %}
+</body>
+</html>

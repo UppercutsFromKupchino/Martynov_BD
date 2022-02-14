@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Плейлисты</title>
+</head>
+<body>
+    <div class="cap-links">
+        <a href="{{ url_for('index') }}">Домашняя страница</a>
+        <a href="{{ url_for('logout') }}">Выход из системы</a>
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+     <ul>
+         {% for message in messages %}
+         <li>{{ message }}</li>
+         {% endfor %}
+     </ul>
+    {% endif %}
+    {% endwith %}
+    {% if list_of_all_playlists %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Название плейлиста</th>
+                    <th>Логин создателя</th>
+                    <th>ФИО создателя</th>
+                    <th>Перейти к плейлисту</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for playlist in list_of_all_playlists %}
+                <tr>
+                    <td>{{ playlist.Playlist.name_of_playlist }}</td>
+                    <td>{{ playlist.User.login_of_user }}</td>
+                    <td>{{ playlist.User.fio_of_user }}</td>
+                    <td>
+                        <form class="redirect-to-playlist-form" action="{{ url_for('playlists') }}" method="post">
+                            {{ redirect_to_playlist_form.id_of_playlist(value=playlist.Playlist.id_of_playlist) }}
+                            {{ redirect_to_playlist_form.submit_redirect() }}
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif not list_of_all_playlists %}
+        <p>Пока нет никаких плейлистов:( Войдите в систему, как создатель и создайте новый!</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Домашняя страница</title>
+</head>
+<body>
+    <div class="cap-links">
+        {% if not current_user.is_authenticated %}
+        <a href="{{ url_for('login') }}">Логин</a>
+        {% endif %}
+        <a href="{{ url_for('register') }}">Регистрация</a>
+        {% if current_user.is_authenticated %}
+        <a href="{{ url_for('logout') }}">Выход из системы</a>
+        <a href="{{ url_for('playlists') }}">Плейлисты</a>
+        {% if session['role'] == 1 %}
+        <a href="{{ url_for('create_playlist') }}">Создать плейлист</a>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+     <ul>
+         {% for message in messages %}
+         <li>{{ message }}</li>
+         {% endfor %}
+     </ul>
+    {% endif %}
+    {% endwith %}
+    <p>Добро пожаловать на Фильмопоиск HD</p>
+</body>
+</html>
