@@ -132,7 +132,7 @@ class Playlist(db.Model):
             query = query.join(User, Playlist.id_of_user == User.id_of_user)
             query = query.outerjoin(RatingOfPlaylist, RatingOfPlaylist.id_of_playlist == Playlist.id_of_playlist)
             query = query.filter(Playlist.id_of_playlist == id_playlist)
-            return query.distinct().all()
+            return query.all()
         except:
             flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
             return redirect(url_for('playlist', id_playlist=id_playlist))
