@@ -20,7 +20,6 @@ def login():
     if login_form.submit.data:
 
         user = User.get_user_by_login(login_form.login.data)
-        print(user)
 
         if user:
 
@@ -110,6 +109,15 @@ def playlist(id_playlist):
     _playlist = Playlist.get_info_about_playlist(id_playlist)
     _playlist_len = len(_playlist)
 
+    all_marks = RatingOfPlaylist.get_all_marks_for_playlist(id_playlist)
+    all_marks_len = len(all_marks)
+    print(all_marks)
+
+    mean_mark = 0
+    for i in range(all_marks_len):
+        mean_mark += all_marks[i][0]
+    mean_mark = mean_mark / all_marks_len
+
     if session['role'] == 2:
 
         rate_playlist_form = RatePlaylist()
@@ -117,12 +125,13 @@ def playlist(id_playlist):
         if rate_playlist_form.submit_rate.data:
 
             RatingOfPlaylist.rate_playlist(id_playlist, current_user.get_id(), rate_playlist_form.rate_playlist.data)
-            return redirect(url_for('playlist', id_playlist=id_playlist))
+            return redirect(url_for('playlists'))
 
         return render_template("playlist.html", _playlist=_playlist, rate_playlist_form=rate_playlist_form,
-                               id_playlist=id_playlist, _playlist_len=_playlist_len)
+                               id_playlist=id_playlist, _playlist_len=_playlist_len, mean_mark=mean_mark)
 
-    return render_template("playlist.html", _playlist=_playlist, id_playlist=id_playlist, _playlist_len=_playlist_len)
+    return render_template("playlist.html", _playlist=_playlist, id_playlist=id_playlist, _playlist_len=_playlist_len,
+                           mean_mark=mean_mark)
 
 
 @app.route('/films', methods=['GET', 'POST'])

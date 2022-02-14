@@ -126,11 +126,10 @@ class Playlist(db.Model):
     @staticmethod
     def get_info_about_playlist(id_playlist):
         try:
-            query = db.session.query(Playlist, FilmInPlaylist, Film, User, RatingOfPlaylist)
+            query = db.session.query(Playlist, FilmInPlaylist, Film, User)
             query = query.join(FilmInPlaylist, Playlist.id_of_playlist == FilmInPlaylist.id_of_playlist)
             query = query.join(Film, Film.id_of_film == FilmInPlaylist.id_of_film)
             query = query.join(User, Playlist.id_of_user == User.id_of_user)
-            query = query.outerjoin(RatingOfPlaylist, RatingOfPlaylist.id_of_playlist == Playlist.id_of_playlist)
             query = query.filter(Playlist.id_of_playlist == id_playlist)
             return query.all()
         except:
@@ -139,13 +138,13 @@ class Playlist(db.Model):
 
     @staticmethod
     def delete_playlist(id_playlist):
-        # try:
-        query = db.session.query(Playlist).filter(Playlist.id_of_playlist == id_playlist).delete(synchronize_session=False)
-        db.session.commit()
-        flash('Плейлист успешно удалён')
-        # except:
-        #     flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
-        #     return redirect(url_for('create_playlist'))
+        try:
+            query = db.session.query(Playlist).filter(Playlist.id_of_playlist == id_playlist).delete(synchronize_session=False)
+            db.session.commit()
+            flash('Плейлист успешно удалён')
+        except:
+            flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
+            return redirect(url_for('create_playlist'))
 
 
 class RatingOfPlaylist(db.Model):
@@ -165,13 +164,24 @@ class RatingOfPlaylist(db.Model):
 
     @staticmethod
     def delete_rating_of_playlist(id_playlist):
-        # try:
-        query = db.session.query(RatingOfPlaylist).filter(RatingOfPlaylist.id_of_playlist == id_playlist).delete(synchronize_session=False)
-        db.session.commit()
-        flash('Плейлист успешно удалён')
-        # except:
-        #     flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
-        #     return redirect(url_for('create_playlist'))
+        try:
+            query = db.session.query(RatingOfPlaylist).filter(RatingOfPlaylist.id_of_playlist == id_playlist).delete(synchronize_session=False)
+            db.session.commit()
+            flash('Плейлист успешно удалён')
+        except:
+            flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
+            return redirect(url_for('create_playlist'))
+
+    @staticmethod
+    def get_all_marks_for_playlist(id_playlist):
+        try:
+            query = db.session.query(RatingOfPlaylist)
+            query = query.with_entities(RatingOfPlaylist.mark)
+            query = query.filter(RatingOfPlaylist.id_of_playlist == id_playlist)
+            return query.all()
+        except:
+            flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
+            return redirect(url_for('playlist'))
 
 
 class RoleOfUser(db.Model):
