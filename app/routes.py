@@ -20,6 +20,7 @@ def login():
     if login_form.submit.data:
 
         user = User.get_user_by_login(login_form.login.data)
+        print(user)
 
         if user:
 
@@ -139,8 +140,9 @@ def films():
         if add_film_to_playlist.submit.data:
 
             id_playlist = Playlist.get_id_of_playlist_by_name_of_playlist(add_film_to_playlist.select_playlist.data)
+            print(id_playlist)
 
-            FilmInPlaylist.add_film_in_playlist(add_film_to_playlist.id_of_film.data, id_playlist.id_of_playlist)
+            FilmInPlaylist.add_film_in_playlist(add_film_to_playlist.id_of_film.data, id_playlist[0].id_of_playlist)
 
         return render_template("films.html", all_films=all_films, add_film_to_playlist=add_film_to_playlist)
 

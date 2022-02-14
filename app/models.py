@@ -117,8 +117,8 @@ class Playlist(db.Model):
     @staticmethod
     def get_id_of_playlist_by_name_of_playlist(name):
         try:
-            query = db.session.query(RatingOfPlaylist).filter(Playlist.name_of_playlist == name).one()
-            return query
+            query = db.session.query(Playlist).filter(Playlist.name_of_playlist == name)
+            return query.all()
         except:
             flash('Ошибка взаимодействия с базой данных! Попробуйте позже!')
             return redirect(url_for('films'))
